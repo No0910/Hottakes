@@ -1,32 +1,39 @@
-//On va importer express 
+// On va importer express 
 const express = require('express');
 
-//On crée une constante pour notre application express
+// On crée une constante pour notre application express
 const app = express();
 
-// On crée un premier middleware qui enregistre « Requête reçue ! » dans la console et passe l'exécution
+// Middleware Header pour la sécurité CORS: C'est le 1er middleware qui sera exécuté par notre serveur = middleware général
 app.use((req, res, next) => {
-    console.log('Requête reçue !');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
- });
+  });
 
-// On crée un deuxième qui ajoute un code d'état 201 à la réponse et passe l'exécution
-app.use((req, res, next) => {
-    res.status(201);
-    next();
- });
-
-// On crée un troisième qui envoie la réponse JSON et passe l'exécution
-app.use((req, res, next) => {
-    res.json({ message: 'Votre requête a bien été reçue !' }); 
-    next();
- });
-
- // On crée le dernier élément de middleware qui enregistre « Réponse envoyée avec succès ! » dans la console.
-app.use((req, res) => {
-   console.log('Réponse envoyée avec succès');
- });
-
+// Méthode use avec en 1er arguement : String de l'url visée par l'application (/api/sauces) = n point = route pour laquelle nous souhaitons enregistrer cet élément de middleware
+app.use('/api/sauces', (req, res, next) => {
+    const sauces = [
+      {
+        _id: 'oeihfzeoi',
+        title: 'Mon premier objet',
+        description: 'Les infos de mon premier objet',
+        imageUrl: '',
+        price: 4900,
+        userId: 'qsomihvqios',
+      },
+      {
+        _id: 'oeihfzeomoihi',
+        title: 'Mon deuxième objet',
+        description: 'Les infos de mon deuxième objet',
+        imageUrl: '',
+        price: 2900,
+        userId: 'qsomihvqios',
+      },
+    ];
+    res.status(200).json(sauces);
+  });
 
 // On exporte cette constante pour pouvoir y accèder depuis les autres fichiers de notre projet (Notamment notre server node)
 module.exports = app;
