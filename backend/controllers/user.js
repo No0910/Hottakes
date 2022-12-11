@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 // J'importe mon modèle de user
 const user = require('../models/user');
 
+// J'importe Jsonwebtoken
+const jwt = require('jsonwebtoken');
+
 // J'exporte ma fonction signup
 exports.signup = (req, res, next) => {
     // On va hasher le mot de passe avec bcrypt
@@ -38,8 +41,12 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
                     }
                     res.status(200).json({
-                        userId: user._id,
-                        token: 'TOKEN'
+                       userId: user._id,
+                       token: jwt.sign(
+                           { userId: user._id },
+                           'RANDOM_TOKEN_SECRET',
+                           { expiresIn: '24h' }
+                       )
                     });
                 })
                 .catch(error => res.status(500).json({ error }));
