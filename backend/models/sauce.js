@@ -16,7 +16,7 @@ const sauceSchema = mongoose.Schema({
   },
 );
 
-// J'exporte le modèle terminé: 1er argument le nom du modèle (thing ici), et 2e argument le schéma de données utilisé (thingSchéma ici)
+// J'exporte le modèle terminé: 1er argument le nom du modèle (sauce ici), et 2e argument le schéma de données utilisé (sauceSchema ici)
 module.exports = mongoose.model('sauce', sauceSchema);
 
 

@@ -2,8 +2,10 @@
 const express = require ('express');
 // J'importe mongoose
 const mongoose = require ('mongoose');
-// J'importe le nouveau routeur crée
-const sauceRoutes = require('./routes/sauce')
+// J'importe le nouveau routeur crée pour les items
+const sauceRoutes = require('./routes/sauce');
+// J'importe le nouveau routeur crée pour les utilisateurs
+const userRoutes = require('./routes/user');
 
 // Je relie mon api à mongoDB
 mongoose.connect('mongodb+srv://nestea_93:Rc1YCEEAMCVcS0Wt@atlascluster.kswowam.mongodb.net/?retryWrites=true&w=majority',
@@ -32,3 +34,4 @@ module.exports = app;
 
 // Routes
 app.use('/api/sauce', sauceRoutes);
+app.use('/api/auth', userRoutes);
