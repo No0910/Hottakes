@@ -7,8 +7,6 @@ const userRoutes = require('./routes/user');
 // J'importe le nouveau routeur crée pour les sauces
 //const sauceRoutes = require('./routes/sauce');
 
-
-
 // Je relie mon api à mongoDB
 mongoose.connect('mongodb+srv://nestea_93:Rc1YCEEAMCVcS0Wt@atlascluster.kswowam.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -19,9 +17,6 @@ mongoose.connect('mongodb+srv://nestea_93:Rc1YCEEAMCVcS0Wt@atlascluster.kswowam.
 // Je crée une constante pour l'application express
 const app = express();  
 
-// Je crée un middleware pour analyser le corps de la requête (idem que bodyparser)
-app.use(express.json());
-
 // Je crée un middleware Header pour la sécurité CORS: C'est le 1er middleware qui sera exécuté par notre serveur = middleware général
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,10 +25,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Je crée un middleware pour analyser le corps de la requête (idem que bodyparser)
+app.use(express.json());
+
 // Routes
 app.use('/api/auth', userRoutes);
 //app.use('/api/sauce', sauceRoutes);
-
 
 // J'exporte cette constante pour pouvoir y accèder depuis les autres fichiers de notre projet (Notamment notre server node)
 module.exports = app;
