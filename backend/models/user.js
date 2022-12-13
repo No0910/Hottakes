@@ -1,5 +1,5 @@
 // J'importe mongoose
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 
 // J'importe mongoose-unique-validator qui m'assure que deux utilisateurs ne puissent pas utiliser la même adresse e-mail
 const uniqueValidator = require('mongoose-unique-validator');
@@ -14,4 +14,5 @@ const userSchema = mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 // J'exporte le modèle terminé: 1er argument le nom du modèle (user ici), et 2e argument le schéma de données utilisé (userSchema ici)
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);
+

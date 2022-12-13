@@ -1,9 +1,9 @@
 // J'importe express
 const express = require('express');
-// J'importe mon controlleur
-const userCtrl = require('../controllers/user');
 // Je crée un routeur
 const router = express.Router();
+// J'importe mon controlleur
+const userCtrl = require('../controllers/user-ctrl');
 
 // Route POST: Pour le sign up
 router.post('/signup', userCtrl.signup);

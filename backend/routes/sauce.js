@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 // J'importe mon controlleur
-const sauceCtrl = require('../controllers/sauce');
+const sauceCtrl = require('../controllers/sauce-ctrl');
 
 // Route POST : Pour créer une sauce dans la base de données
 router.post('/', auth, sauceCtrl.createSauce);

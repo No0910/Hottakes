@@ -1,11 +1,11 @@
 //J'importe mon package de chiffrement bcrypt
 const bcrypt = require('bcrypt');
-
-// J'importe mon modèle de user
-const user = require('../models/user');
-
 // J'importe Jsonwebtoken
 const jwt = require('jsonwebtoken');
+
+// J'importe mon modèle de user
+const User = require('../models/user');
+
 
 // J'exporte ma fonction signup
 exports.signup = (req, res, next) => {
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
 // J'exporte ma fonction login
 exports.login = (req, res, next) => {
     // On vérifie que l'e-mail entré par l'utilisateur correspond à un utilisateur existant de la base de données 
-    user.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
