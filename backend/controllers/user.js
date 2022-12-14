@@ -2,7 +2,6 @@
 const bcrypt = require('bcrypt');
 // J'importe Jsonwebtoken
 const jwt = require('jsonwebtoken');
-
 // J'importe mon modèle de user
 const User = require('../models/user');
 
@@ -35,7 +34,8 @@ exports.login = (req, res, next) => {
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
             }
             // La fonction 'compare' de bcrypt compare le mot de passe entré par l'utilisateur avec le hash enregistré dans la base de données
-            bcrypt.compare(req.body.password, user.password)
+            bcrypt
+                .compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
