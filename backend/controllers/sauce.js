@@ -1,5 +1,8 @@
 // J'importe ma constante 'Sauce'
-const Sauce = require('../models/sauce');
+const Sauce = require('../models/Sauce');
+// Je crée ma constante 'fs' qui donne accès aux fonctions qui permettent de modifier le système de fichiers
+const fs = require('fs');
+
 
 // J'exporte la fonction createSauce pour la création d'une sauce
 exports.createSauce =  (req, res, next) => {
@@ -15,7 +18,8 @@ const sauce = new Sauce({
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 });
   //J'enregistre cet objet dans la base de données
-  sauce.save()
+  sauce
+  .save()
   .then(() => { res.status(201).json({message: 'Sauce enregistrée !'})})
   .catch(error => { res.status(400).json( { error })})
 };
@@ -46,20 +50,23 @@ exports.modifySauce = (req, res, next) => {
 
 // J'exporte la fonction 'deleteSauce' pour la suppression d'une sauce
 exports.deleteSauce = (req, res, next) => {
-    Sauce.deleteOne({_id: req.params.id}).then(
-      () => {
-        res.status(200).json({
-          message: 'Sauce supprimée !'
-        });
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
-  };
+  Sauce.findOne({ _id: req.params.id})
+      .then(sauce => {
+          if (sauce.userId != req.auth.userId) {
+              res.status(401).json({message: 'Non autorisé ! '});
+          } else {
+              const filename = sauce.imageUrl.split('/images/')[1];
+              fs.unlink(`images/${filename}`, () => {
+                  Sauce.deleteOne({_id: req.params.id})
+                      .then(() => { res.status(200).json({message: 'Sauce supprimée !'})})
+                      .catch(error => res.status(401).json({ error }));
+              });
+          }
+      })
+      .catch( error => {
+          res.status(500).json({ error });
+      });
+};
 
 // J'exporte la fonction 'getOneSauce' pour la récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
