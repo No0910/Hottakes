@@ -99,3 +99,27 @@ exports.getAllSauce =  (req, res, next) => {
     }
   );
 };
+
+// J'exporte la fonction de "like/dislike" pour les sauces (like = 1, dislike = -1)
+exports.likeDislikeSauce = (req,res,next) {
+  // Je vérifie que la sauce à liker existe bien :
+  Sauce.findOne({
+    _id: req.params.id
+  }).then(
+    (sauce) => {
+      console.log(sauce);
+      // Si elle existe je dois regarder l'action de l'utilisateur (Like? ou Dislike? Ou rien?)
+      // const action = req.body.like Si action = 1 alors updatesauce + ajout user au tableau des likes (sil est pas déjà dedans)
+      // Vérifier si la personne qui like n'est pas déjà présente dans le tableau : Si elle est déjà présente, ca ne fait rien, si elle n'était pas dedans, ca l'ajoute.
+      // tableau des userliked : attention interdit au doublon. Si l'user aime deja pas d'ajout dans le tableau
+    }
+  ).catch(
+    (error) => {
+      res.status(404).json({
+        error: error
+      });
+    }
+  );
+  
+  
+};

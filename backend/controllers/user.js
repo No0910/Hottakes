@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 // J'importe Jsonwebtoken
 const jwt = require('jsonwebtoken');
 // J'importe mon modèle de user
-const User = require('../models/user');
+const User = require('../models/User');
 
 
 // J'exporte ma fonction signup

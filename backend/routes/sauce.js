@@ -19,6 +19,8 @@ router.delete('/:id', auth, sauceCtrl.deleteSauce);
 router.get('/:id', auth, sauceCtrl.getOneSauce );
 // Route GET : Renvoie un tableau de toutes les sauces de la base de données
 router.get('/', auth, sauceCtrl.getAllSauce);
+// Route POST: Renvoie le like ou le dislike d'un userId
+//router.post("/:id/like", auth, sauceCtrl.likeDislikeSauce);
 
 // J'exporte le routeur de ce fichier
 module.exports = router;

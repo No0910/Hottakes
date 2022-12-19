@@ -1,3 +1,6 @@
+// J'importe le fichier pour les variables d'environnements
+require('dotenv').config();
+
 // J'importe le package http de Node
 const http = require('http');
 

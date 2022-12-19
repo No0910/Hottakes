@@ -1,6 +1,7 @@
 //////////////////CREATION DE L'APPLICATION////////////////////////////
 
-
+// j'importe dotenv (variables d'environnement)
+require('dotenv').config();
 // J'importe express 
 const express = require ('express');
 // J'importe mongoose
@@ -14,7 +15,7 @@ const userRoutes = require('./routes/user');
 const path = require('path');
 
 // Je relie mon api à mongoDB
-mongoose.connect('mongodb+srv://nestea_93:I0PBt5uPmbLHFcZ5@cluste-p6.8vusb6t.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
