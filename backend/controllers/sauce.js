@@ -100,26 +100,97 @@ exports.getAllSauce =  (req, res, next) => {
   );
 };
 
+
+
 // J'exporte la fonction de "like/dislike" pour les sauces (like = 1, dislike = -1)
-exports.likeDislikeSauce = (req,res,next) {
+
+//Etape 1: Vérifier si dans le tableau 'userLiked', il existe déjà l'id de la personne qui vient de cliquer sur le pouce up
+//Etape 2: Si déjà présent, ne rien faire
+//Etape 2: Si inexistant, l'ajouter au tableau 'userLiked' + faire un like + 1 dans la base de données
+//Etape 3: Si l'utilisateur ne like pas et ne dislike pas : Le supprimer du tableau 'userLiked' s'il est présent, et le supprimer du tableau 'userDisliked' s'il est présent.
+//Etape 4: Vérifier dans le tableau 'userDisliked', si l'id de la personne qui vient de cliquer sur le pouce down existe déjà
+//Etape 5: Si déjà présent, ne rien faire
+//Etape 5 : Si inexistant, l'ajouter au tableau des 'userDisliked' + faire un dislike +1
+//Etape 6: Le user avait liké la sauce puis la dislike : Il faudra supprimer l'id du user dans le tableau "userLiked", et en même temps ajouter l'id du user dans le tableau 'userDisliked'
+
+exports.likeDislikeSauce = (req,res,next) => {
   // Je vérifie que la sauce à liker existe bien :
   Sauce.findOne({
     _id: req.params.id
-  }).then(
+  })
+  .then(
     (sauce) => {
       console.log(sauce);
+
+      //  Si like = 1  //
+
+
       // Si elle existe je dois regarder l'action de l'utilisateur (Like? ou Dislike? Ou rien?)
-      // const action = req.body.like Si action = 1 alors updatesauce + ajout user au tableau des likes (sil est pas déjà dedans)
-      // Vérifier si la personne qui like n'est pas déjà présente dans le tableau : Si elle est déjà présente, ca ne fait rien, si elle n'était pas dedans, ca l'ajoute.
-      // tableau des userliked : attention interdit au doublon. Si l'user aime deja pas d'ajout dans le tableau
-    }
-  ).catch(
+      if(sauce === 1){
+        console.log("Cette sauce existe bien")
+        // Je crée ma constante 'action', lorsqu'un utilisateur clique sur le like
+        const action = req.body.like;
+       // Si action = 1 alors mise à jour de la sauce et ajout de l'utilsateur au tableau des likes(s'il n'est pas déjà dedans)
+        if(action === 1) {
+          // Mise à jour de la sauce dans la base de données
+          Sauce.updateOne({
+            // Je cherche la sauce dans la base de données
+            _id: req.params.id,
+          },
+          // Ici il faut incrémenter dans le champ(tableau) l'utilisateur qui a liké
+          // Et j'ajoute like + 1
+          )
+          .then(() => res.status(201).json({ message: "Sauce like +1 !" }))
+          .catch((error) => res.status(400).json(" error "));
+        }
+
+        
+      // Si pas de like ( like = 0 => Pas de vote) //
+
+      //Si action = 0 ( C'est à dire si l'utilisateur ne vote pas)
+      if (action === 0){
+          // Mise à jour de la sauce dans la base de données
+          Sauce.updateOne({
+            // Je cherche la sauce dans la base de données
+            _id: req.params.id,
+          },
+          // Ici je met à jour le tableau des likes: Si l'utilisateur était présent, il doit être supprimé, car il n'aime plus la sauce
+          // Je fais like -1
+          )
+          .then(() => res.status(201).json({ message: "Sauce like = 0 !" }))
+          .catch((error) => res.status(400).json(" error "));
+      }
+      }
+
+
+      // Si un dislike (dislike = 1) //
+
+  
+      //Si action = 0 ( C'est à dire si l'utilisateur ne vote pas)
+      if (action === -1)  
+          //Si l'utilisateur n'a pas encore disliker
+          console.log("L'userId est dans le tableau userDisliked (donc dans la bdd) et likes = -1 ou dislikes = 1")
+          // Mise à jour de la sauce dans la base de données
+          Sauce.updateOne({
+            // Je cherche la sauce dans la base de données
+            _id: req.params.id,
+          },
+          // Ici je met à jour le tableau des dislikes: J'ajoute l'userId au tableau 'userDisliked' (Uniquement s'il n'y était pas déjà)
+          // Si mon userId était dans le tableau 'userLiked', je dois le supprimer de ce tableau
+          // Je fais like -1, ou dislike 1
+          )
+          .then(() => res.status(201).json({ message: "Sauce like = 0 !" }))
+          .catch((error) => res.status(400).json(" error "));
+      }
+      
+    
+  )
+  .catch(
     (error) => {
       res.status(404).json({
         error: error
       });
     }
   );
-  
-  
-};
+  };
+
