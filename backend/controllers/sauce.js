@@ -138,7 +138,13 @@ exports.likeDislikeSauce = (req,res,next) => {
             _id: req.params.id,
           },
           // Ici il faut incrémenter dans le champ(tableau) l'utilisateur qui a liké
-          // Et j'ajoute like + 1
+          {
+            // J'ajoute like + 1 avec la méthode inc
+            $inc: { likes: 1 },
+            // Je rajoute le usersLiked avec la méthode push
+            $push: { usersLiked: req.auth.userId },
+          }
+          
           )
           .then(() => res.status(201).json({ message: "Sauce like +1 !" }))
           .catch((error) => res.status(400).json(" error "));
@@ -155,7 +161,12 @@ exports.likeDislikeSauce = (req,res,next) => {
             _id: req.params.id,
           },
           // Ici je met à jour le tableau des likes: Si l'utilisateur était présent, il doit être supprimé, car il n'aime plus la sauce
-          // Je fais like -1
+           {
+            // J'ajoute like - 1 avec la méthode inc
+            $inc: { likes: -1 },
+            // Je rajoute le usersLiked avec la méthode push
+            $push: { usersLiked: },
+          },
           )
           .then(() => res.status(201).json({ message: "Sauce like = 0 !" }))
           .catch((error) => res.status(400).json(" error "));
@@ -175,9 +186,15 @@ exports.likeDislikeSauce = (req,res,next) => {
             // Je cherche la sauce dans la base de données
             _id: req.params.id,
           },
-          // Ici je met à jour le tableau des dislikes: J'ajoute l'userId au tableau 'userDisliked' (Uniquement s'il n'y était pas déjà)
-          // Si mon userId était dans le tableau 'userLiked', je dois le supprimer de ce tableau
-          // Je fais like -1, ou dislike 1
+           // Ici je met à jour le tableau des dislikes: J'ajoute l'userId au tableau 'userDisliked' (Uniquement s'il n'y était pas déjà)
+          {
+            // Je fais dislike +1 : Avec la méthode $inc qui incrémente dans le tableau
+            $inc: { dislikes: 1 }, 
+            // Si mon userId était dans le tableau 'userLiked', je dois le supprimer de ce tableau : méthode pull pour supprimer du tableau
+            $pull: {usersLiked : },
+            // Méthode push pour ajouter un user dans le tableau userDisliked
+            $push: { usersDisliked: },
+          },
           )
           .then(() => res.status(201).json({ message: "Sauce like = 0 !" }))
           .catch((error) => res.status(400).json(" error "));
