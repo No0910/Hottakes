@@ -123,13 +123,10 @@ exports.likeDislikeSauce = (req,res,next) => {
     (sauce) => {
       console.log(sauce);
 
-    //  Si like = 1  //
-
-    // Si l'utilisateur n'a pas encore liké la sauce (donc n'est pas présent dans le tableau des userLiked), mais clique sur like
-    if (!sauce.usersLiked.includes(request.body.userId) && req.body.like === 1){
-  
-      // Je crée ma constante 'action', lorsqu'un utilisateur clique sur le like
-      const action = req.body.like;  
+    if (req.body.like === 1){
+      //  Si like = 1  //
+      // Si l'utilisateur n'a pas encore liké la sauce (donc n'est pas présent dans le tableau des userLiked), mais clique sur like
+    if (!sauce.usersLiked.includes(req.body.userId)){
       // Alors je mets à jour la sauce dans la base de données
       Sauce.updateOne({
         // Je cherche la sauce dans la base de données
@@ -140,18 +137,42 @@ exports.likeDislikeSauce = (req,res,next) => {
           // J'ajoute like + 1 avec la méthode inc
           $inc: { likes: 1 },
           // Je rajoute le usersLiked avec la méthode push
-          $push: { usersLiked: req.auth.userId },
+          $push: { usersLiked: req.body.userId },
         }
         
         )
         .then(() => res.status(201).json({ message: "Sauce like +1 !" }))
         .catch((error) => res.status(400).json(" error "));
       }
-    
-     // Si pas de like ( like = 0 => Pas de vote) //
+
+    }else if(req.body.like === -1){
+        // Si un dislike (dislike = 1) //
+
+    // Si l'utilisateur n'a pas encore disliké la sauce (donc n'est pas présent dans le tableau des userDisliked), mais clique sur dislike
+    if (!sauce.usersDisliked.includes(req.body.userId)){
+      // Mise à jour de la sauce dans la base de données
+      Sauce.updateOne({
+        // Je cherche la sauce dans la base de données
+        _id: req.params.id,
+      },
+       // Ici je met à jour le tableau des dislikes: J'ajoute l'userId au tableau 'userDisliked' (Uniquement s'il n'y était pas déjà)
+      {
+        // Je fais dislike +1 : Avec la méthode $inc qui incrémente dans le tableau
+        $inc: { dislikes: 1 }, 
+        // Méthode push pour ajouter un user dans le tableau userDisliked
+        $push: { usersDisliked: req.body.userId},
+      },
+      )
+      .then(() => res.status(201).json({ message: "Sauce disliked = +1 et like = -1" }))
+      .catch((error) => res.status(400).json(" error "));
+
+}
+
+    }else if(req.body.like === 0){
+           // Si pas de like ( like = 0 => Pas de vote) //
 
   //Si action = 0 ( C'est à dire si l'utilisateur ne vote pas), mais que l'utilisateur est déjà présent dans le tableau userLiked
-  if (sauce.usersLiked.includes(request.body.userId) && req.body.like === 0){
+  if (sauce.usersLiked.includes(req.body.userId)){
     // Mise à jour de la sauce dans la base de données
     Sauce.updateOne({
       // Je cherche la sauce dans la base de données
@@ -162,45 +183,17 @@ exports.likeDislikeSauce = (req,res,next) => {
       // J'ajoute like - 1 avec la méthode inc
       $inc: { likes: -1 },
       // Je retire le usersLiked avec la méthode pull
-      $pull: { usersLiked:  req.auth.userId},
-      // Je retire le userDisliked avec la méthode pull (car l'utilisateur ne doit pas disliké la sauce non plus, donc ne pas être présent dans ce tableau)
-      $pull : { usersDisliked: req.auth.userId}
+      $pull: { usersLiked:  req.body.userId},
     },
     )
     .then(() => res.status(201).json({ message: "Sauce like = 0 !" }))
     .catch((error) => res.status(400).json(" error "));
 }
 
-
-    // Si un dislike (dislike = 1) //
-
-
-    // Si l'utilisateur n'a pas encore disliké la sauce (donc n'est pas présent dans le tableau des userDisliked), mais clique sur dislike
-    if (!objet.usersDisliked.includes(request.body.userId) && req.body.like === -1 ){
-           //Si l'utilisateur n'a pas encore disliker
-           console.log("L'userId est dans le tableau userDisliked (donc dans la bdd) et likes = -1 ou dislikes = 1")
-           // Mise à jour de la sauce dans la base de données
-           Sauce.updateOne({
-             // Je cherche la sauce dans la base de données
-             _id: req.params.id,
-           },
-            // Ici je met à jour le tableau des dislikes: J'ajoute l'userId au tableau 'userDisliked' (Uniquement s'il n'y était pas déjà)
-           {
-             // Je fais dislike +1 : Avec la méthode $inc qui incrémente dans le tableau
-             $inc: { dislikes: 1 }, 
-             // Si mon userId était dans le tableau 'userLiked', je dois le supprimer de ce tableau : méthode pull pour supprimer du tableau
-             $pull: { usersLiked : req.auth.userId},
-             // Méthode push pour ajouter un user dans le tableau userDisliked
-             $push: { usersDisliked: req.auth.userId},
-           },
-           )
-           .then(() => res.status(201).json({ message: "Sauce disliked = +1 et like = -1" }))
-           .catch((error) => res.status(400).json(" error "));
-
-    }
+  
 
     // Si l'utilisateur a déjà disliké (donc est présent dans le tableau userDisliked) mais ne clique pas sur dislike (pas de vote)
-    if (sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0 ){
+    if (sauce.usersDisliked.includes(req.body.userId)){
         // Mise à jour de la sauce dans la base de données
         Sauce.updateOne({
           // Je cherche la sauce dans la base de données
@@ -211,13 +204,16 @@ exports.likeDislikeSauce = (req,res,next) => {
             // Je fais dislike -1 : Avec la méthode $inc qui incrémente dans le tableau
             $inc: {dislikes: -1 },
             // Méthode $pull pour supprimer les userDisliked du tableau
-            $pull: {usersDisliked: req.auth.userId },
+            $pull: {usersDisliked: req.body.userId },
         },
     
         )
         .then(() => res.status(201).json({ message: "Sauce disliked = 0" }))
         .catch((error) => res.status(400).json(" error "));
     }
+
+    }
+
     })
 
   .catch ((error) => res.status(404).json(" error "));
