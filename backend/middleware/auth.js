@@ -1,4 +1,4 @@
-//
+// J'importe la dépendance dotenv
 require('dotenv').config();
 // J'importe Jsonwebtoken
 const jwt = require('jsonwebtoken');

@@ -1,12 +1,9 @@
 // J'importe le fichier pour les variables d'environnements
 require('dotenv').config();
-
 // J'importe le package http de Node
 const http = require('http');
-
 // J'importe notre application app.js
 const app = require('./app');
-
 // Je crée la fonction normalizePort qui renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -22,10 +19,8 @@ const normalizePort = val => {
 
 // Stockage des variables environnement
 const port = normalizePort(process.env.PORT || '3000');
-
 // Je précise à l'application express sur quel port elle doit tourner :
 app.set('port', port);
-
 // Je crée la fonction errorHandler qui va rechercher et gérer les différents type d'erreurs possible de manière appropriée
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
@@ -51,7 +46,6 @@ const errorHandler = error => {
 const server = http.createServer(app);
 
 // Je crée un écouteur d'évènements qui consigne le port ou le canal nommé sur lequel le serveur s'exécute dans la console
-
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();

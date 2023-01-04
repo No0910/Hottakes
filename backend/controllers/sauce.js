@@ -6,6 +6,7 @@ const { request } = require('http');
 
 
 // J'exporte la fonction createSauce pour la création d'une sauce
+
 exports.createSauce =  (req, res, next) => {
 // Je crée une constante contenant la nouvelle instance de notre modèle 'sauce': JSON.parse() transformera un objet stringifié en Object JavaScript exploitable.
 const sauceObject = JSON.parse(req.body.sauce);
@@ -105,15 +106,6 @@ exports.getAllSauce =  (req, res, next) => {
 
 // J'exporte la fonction de "like/dislike" pour les sauces (like = 1, dislike = -1)
 
-//Etape 1: Vérifier si dans le tableau 'userLiked', il existe déjà l'id de la personne qui vient de cliquer sur le pouce up
-//Etape 2: Si déjà présent, ne rien faire
-//Etape 2: Si inexistant, l'ajouter au tableau 'userLiked' + faire un like + 1 dans la base de données
-//Etape 3: Si l'utilisateur ne like pas et ne dislike pas : Le supprimer du tableau 'userLiked' s'il est présent, et le supprimer du tableau 'userDisliked' s'il est présent.
-//Etape 4: Vérifier dans le tableau 'userDisliked', si l'id de la personne qui vient de cliquer sur le pouce down existe déjà
-//Etape 5: Si déjà présent, ne rien faire
-//Etape 5 : Si inexistant, l'ajouter au tableau des 'userDisliked' + faire un dislike +1
-//Etape 6: Le user avait liké la sauce puis la dislike : Il faudra supprimer l'id du user dans le tableau "userLiked", et en même temps ajouter l'id du user dans le tableau 'userDisliked'
-
 exports.likeDislikeSauce = (req,res,next) => {
   // Je vérifie que la sauce à liker existe bien :
   Sauce.findOne({
@@ -169,7 +161,7 @@ exports.likeDislikeSauce = (req,res,next) => {
 }
 
     }else if(req.body.like === 0){
-           // Si pas de like ( like = 0 => Pas de vote) //
+  // Si pas de like ( like = 0 => Pas de vote)
 
   //Si action = 0 ( C'est à dire si l'utilisateur ne vote pas), mais que l'utilisateur est déjà présent dans le tableau userLiked
   if (sauce.usersLiked.includes(req.body.userId)){
