@@ -24,7 +24,6 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
-
 // J'exporte ma fonction login
 exports.login = (req, res, next) => {
     // On vérifie que l'e-mail entré par l'utilisateur correspond à un utilisateur existant de la base de données 
@@ -34,8 +33,7 @@ exports.login = (req, res, next) => {
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
             }
             // La fonction 'compare' de bcrypt compare le mot de passe entré par l'utilisateur avec le hash enregistré dans la base de données
-            bcrypt
-                .compare(req.body.password, user.password)
+            bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
