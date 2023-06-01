@@ -18,7 +18,7 @@ const normalizePort = val => {
 };
 
 // Stockage des variables environnement
-const port = normalizePort(process.env.CLIENT_URL);
+const port = normalizePort(process.env.PORT ||'3000');
 // Je précise à l'application express sur quel port elle doit tourner :
 app.set('port', port);
 // Je crée la fonction errorHandler qui va rechercher et gérer les différents type d'erreurs possible de manière appropriée
