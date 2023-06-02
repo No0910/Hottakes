@@ -1,5 +1,5 @@
 // J'importe ma constante 'Sauce'
-const Sauce = require('../models/Sauce');
+const Sauce = require('../models/sauce');
 // Je crée ma constante 'fs' qui donne accès aux fonctions qui permettent de modifier le système de fichiers
 const fs = require('fs');
 const { request } = require('http');
