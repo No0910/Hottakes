@@ -1,5 +1,6 @@
 # Piiquante
 
+![Screenshot-piiquante-hottakes](https://github.com/No0910/Piiquante_P6/assets/98163578/090b0c23-c3be-4d97-aa6f-eaee1dc2dfec)
 
 Création d’une API sécurisée pour l’ application web d’avis gastronomiques: Hot Takes.
 
