@@ -1,4 +1,4 @@
-# Piiquante
+# Hot Takes
 
 ![Screenshot-piiquante-hottakes](https://github.com/No0910/Piiquante_P6/assets/98163578/090b0c23-c3be-4d97-aa6f-eaee1dc2dfec)
 
