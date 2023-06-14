@@ -63,7 +63,7 @@ Une version en ligne est directement accessible à l'adresse : [Hot Takes](https
 
 Sinon, vous pouvez cloner le projet
 ```terminal
-git clone https://github.com/No0910/Kasa.git
+git clone https://github.com/No0910/Hottakes.git
 ```
 ## Auteur
 Ce projet a été réalisé par Nolwenn Duhamel
