@@ -15,7 +15,7 @@ La marque souhaite faire évoluer l’application web dans le futur pour pouvoir
 
 Toute la partie __frontend__ a été réalisée en amont par Openclassrooms, elle est disponible sur [ce repository:](https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6)
 
-Le but de ce projet est de créer la partie __backend__ de l’application (ce repository ne contient que la partie backend).
+Le but de ce projet est de créer la partie __backend__ de l’application.
 
 L’application doit répondre à des __objectifs de sécurité__:
 - Le mot de passe de l'utilisateur doit être haché. 
