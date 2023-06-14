@@ -57,7 +57,14 @@ Server: NodeJs
 Base de données: MongoDB (hébergement sur MongoDB atlas) avec Mongoose.
 
 ------ 
+## Installation
+---
+Une version en ligne est directement accessible à l'adresse : [Hot Takes](https://nd-hot-takes.vercel.app/)
 
+Sinon, vous pouvez cloner le projet
+```terminal
+git clone https://github.com/No0910/Kasa.git
+```
 ## Auteur
 Ce projet a été réalisé par Nolwenn Duhamel
 Github: github.com/No0910
